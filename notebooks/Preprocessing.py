@@ -13,8 +13,10 @@ df = pd.read_sql('SELECT * FROM Game LIMIT 1000', con)
 # %%
 for c in df.columns:
     print(c)
-# %%
 
+# %%
 for c in zip(df.columns, df.iloc[0]):
     print(c)
+
 # %%
+

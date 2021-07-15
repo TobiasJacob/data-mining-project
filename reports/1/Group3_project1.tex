@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Group 3}
+\author{
+    Kayla Wankowski\\
+    Muddasar Ali\\
+    Raffaele Galliera\\
+    Tobias Jacob (tj75@students.uwf.edu)
+}
+
+\maketitle
+
+\section{Preprocessing steps}
+The dataset measures 967 MB in size and contains multiple tables.
+We are most interested in the Player, PlayerAttributes, Team, and Game table with 5, 37, 7, and 149 columns, respectively.
+Our goal is to build an interesting data cube that allows us to answer multiple questions.
+It should contain the following dimensions and concept hierarchies:
+\begin{itemize}
+    \item Player, Team
+    \item Game, Season
+    \item Place
+    \item Time
+\end{itemize}
+The value should be ``Points scored'' and ``Attempted point scores''. We are also interested in the following properties of players: Size, Salary.
+
+
+\end{document}
