@@ -1,5 +1,7 @@
 # Data mining project
 
+Please keep the Git history clean. Do not submit binary files, large files, build outputs or something comparable.
+
 ## Setup
 
 Go to [https://www.kaggle.com/wyattowalsh/basketball](https://www.kaggle.com/wyattowalsh/basketball) and download the basketball dataset. It should be a file named `archive.zip`. If you extract it, there should be a folder called `archive`. Copy this folder into the root of this project to set it up.
@@ -23,4 +25,26 @@ pip install -r requirements.txt
 
 ## Preprocessing
 
-The preprocessing pipeline is in `notebooks/Preprocessing.ipynb`.
+The preprocessing pipeline is in `notebooks/Preprocessing.py`. Running it with the VS Code python extension or just as a normal python script will create `notebooks/reducedDataset.sqlite`.
+
+```console
+cd notebooks
+python3 Preprocessing.py
+```
+
+## Building Project reports
+
+For Python code highlighting a latex package called `minted` is needed. This depends on [Pygments](https://pygments.org/). If it is not already installed, it can be installed using
+
+```console
+pip install Pygments
+```
+
+The pdf file can then be compiled using
+
+```console
+cd reports/1
+pdflatex -shell-escape Group3_project1.tex
+```
+
+Worst case: [Overleaf](https://www.overleaf.com/) has Pygments pre-installed.

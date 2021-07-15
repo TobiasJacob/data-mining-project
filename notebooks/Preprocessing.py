@@ -1,22 +1,30 @@
-#%%
+# %% Import frameworks
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import sqlite3
 
-#%%
-con = sqlite3.connect('../archive/basketball.sqlite')
+# %% Connect to databases
+con = sqlite3.connect('../archive/basketball.sqlite') # Read in data
+conOut = sqlite3.connect('../reducedDataset.sqlite') # Write data
 
-# %%
-df = pd.read_sql('SELECT * FROM Game LIMIT 1000', con)
+# %% Convert GameDatabase
+def reduceData(tableName: str, columnsToKeep: str):
+    df = pd.read_sql(f'SELECT * FROM {tableName} LIMIT 10', con) # Make a small request with all columns
+    print("Reducing", tableName, "\n")
+    print("Columns before with example: ", ", ".join([f"{colName}: {val}" for (colName, val) in zip(df.columns, df.iloc[1])]), "\n")
+    print("Columns after: ", columnsToKeep, "\n")
+    df = pd.read_sql(f'SELECT {columnsToKeep} FROM {tableName}', con) # Request only columnsToKeep
+    df.to_sql(tableName, conOut, if_exists = "replace")
 
-# %%
-for c in df.columns:
-    print(c)
+# %% convert Game
+columnsToKeep = "TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY"
+reduceData("Game", columnsToKeep)
 
-# %%
-for c in zip(df.columns, df.iloc[0]):
-    print(c)
+# %% convert Player_Attributes
+columnsToKeep = "ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR"
+reduceData("Player_Attributes", columnsToKeep)
 
-# %%
-
+# %% convert Team_Attributes
+columnsToKeep = "ID, YEARFOUNDED, CITY, NICKNAME"
+reduceData("Team_Attributes", columnsToKeep)

@@ -1,13 +1,24 @@
 \documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.8in]{geometry}
+\usepackage[english]{babel}
 \usepackage{graphicx}
+\usepackage{listings} % linebreaks in lstlisting
+\usepackage{minted} % python code
 
+
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
 \begin{document}
 
-\title{Group 3}
+\title{Group 3 Project Part 1}
 \author{
     Kayla Wankowski\\
-    Muddasar Ali\\
-    Raffaele Galliera\\
+    Muddasar Ali (ma229@students.uwf.edu)\\
+    Raffaele Galliera (rg101@students.uwf.edu)\\
     Tobias Jacob (tj75@students.uwf.edu)
 }
 
@@ -15,16 +26,69 @@
 
 \section{Preprocessing steps}
 The dataset measures 967 MB in size and contains multiple tables.
-We are most interested in the Player, PlayerAttributes, Team, and Game table with 5, 37, 7, and 149 columns, respectively.
-Our goal is to build an interesting data cube that allows us to answer multiple questions.
-It should contain the following dimensions and concept hierarchies:
-\begin{itemize}
-    \item Player, Team
-    \item Game, Season
-    \item Place
-    \item Time
-\end{itemize}
-The value should be ``Points scored'' and ``Attempted point scores''. We are also interested in the following properties of players: Size, Salary.
+We are most interested in the PlayerAttributes, TeamAttributes, and Game table with 37, 7, and 149 columns, respectively.
+Our goal is to build an interesting data set that allows us to answer multiple questions.
+We created a preprocessing script that takes the full database and reduces it.
+The output of the dataset shows the data columns we decided to keep.
+The script reduces the size of the database to 7MB.
+
+\subsubsection*{Output of the script}
+
+\begin{lstlisting}
+Reducing Game 
+Columns before with example:  GAME_ID: 0024600003, SEASON_ID: 21946, TEAM_ID_HOME: 1610610034, TEAM_ABBREVIATION_HOME: BOM, TEAM_NAME_HOME: St. Louis Bombers, GAME_DATE: 1946-11-02, MATCHUP_HOME: BOM vs. PIT, WL_HOME: W, MIN_HOME: 0, FGM_HOME: 20.0, FGA_HOME: 59.0, FG_PCT_HOME: 0.339, FG3M_HOME: None, FG3A_HOME: None, FG3_PCT_HOME: None, FTM_HOME: 16.0, FTA_HOME: nan, FT_PCT_HOME: nan, OREB_HOME: None, DREB_HOME: None, REB_HOME: None, AST_HOME: None, STL_HOME: None, BLK_HOME: None, TOV_HOME: None, PF_HOME: 21.0, PTS_HOME: 56, PLUS_MINUS_HOME: 5, VIDEO_AVAILABLE_HOME: 0, TEAM_ID_AWAY: 1610610031, TEAM_ABBREVIATION_AWAY: PIT, TEAM_NAME_AWAY: Pittsburgh Ironmen, MATCHUP_AWAY: PIT @ BOM, WL_AWAY: L, MIN_AWAY: 0, FGM_AWAY: 16.0, FGA_AWAY: 72.0, FG_PCT_AWAY: 0.222, FG3M_AWAY: None, FG3A_AWAY: None, FG3_PCT_AWAY: None, FTM_AWAY: 19.0, FTA_AWAY: nan, FT_PCT_AWAY: nan, OREB_AWAY: None, DREB_AWAY: None, REB_AWAY: None, AST_AWAY: None, STL_AWAY: None, BLK_AWAY: None, TOV_AWAY: None, PF_AWAY: 25.0, PTS_AWAY: 51, PLUS_MINUS_AWAY: -5, VIDEO_AVAILABLE_AWAY: 0, GAME_DATE_EST: 1946-11-02T00:00:00, GAME_SEQUENCE: None, GAME_STATUS_ID: 3, GAME_STATUS_TEXT: , GAMECODE: 19461102/PITBOM, HOME_TEAM_ID: 1610610034, VISITOR_TEAM_ID: 1610610031, SEASON: 1946, LIVE_PERIOD: 4.0, LIVE_PC_TIME: None, NATL_TV_BROADCASTER_ABBREVIATION: None, LIVE_PERIOD_TIME_BCAST: Q4  - , WH_STATUS: 1.0, TEAM_CITY_HOME: None, PTS_PAINT_HOME: None, PTS_2ND_CHANCE_HOME: None, PTS_FB_HOME: None, LARGEST_LEAD_HOME: None, LEAD_CHANGES_HOME: None, TIMES_TIED_HOME: None, TEAM_TURNOVERS_HOME: None, TOTAL_TURNOVERS_HOME: None, TEAM_REBOUNDS_HOME: None, PTS_OFF_TO_HOME: None, TEAM_CITY_AWAY: None, PTS_PAINT_AWAY: None, PTS_2ND_CHANCE_AWAY: None, PTS_FB_AWAY: None, LARGEST_LEAD_AWAY: None, LEAD_CHANGES_AWAY: None, TIMES_TIED_AWAY: None, TEAM_TURNOVERS_AWAY: None, TOTAL_TURNOVERS_AWAY: None, TEAM_REBOUNDS_AWAY: None, PTS_OFF_TO_AWAY: None, LEAGUE_ID: None, GAME_DATE_DAY: SATURDAY, NOVEMBER 2, 1946, ATTENDANCE: None, GAME_TIME: , TEAM_CITY_NAME_HOME: St. Louis, TEAM_NICKNAME_HOME: Bombers, TEAM_WINS_LOSSES_HOME: -, PTS_QTR1_HOME: 16, PTS_QTR2_HOME: 16, PTS_QTR3_HOME: 18, PTS_QTR4_HOME: 6, PTS_OT1_HOME: None, PTS_OT2_HOME: None, PTS_OT3_HOME: None, PTS_OT4_HOME: None, PTS_OT5_HOME: None, PTS_OT6_HOME: None, PTS_OT7_HOME: None, PTS_OT8_HOME: None, PTS_OT9_HOME: None, PTS_OT10_HOME: None, PTS_HOME_y: 56.0, TEAM_CITY_NAME_AWAY: Pittsburgh, TEAM_NICKNAME_AWAY: Ironmen, TEAM_WINS_LOSSES_AWAY: -, PTS_QTR1_AWAY: 5, PTS_QTR2_AWAY: 15, PTS_QTR3_AWAY: 17, PTS_QTR4_AWAY: 14, PTS_OT1_AWAY: None, PTS_OT2_AWAY: None, PTS_OT3_AWAY: None, PTS_OT4_AWAY: None, PTS_OT5_AWAY: None, PTS_OT6_AWAY: None, PTS_OT7_AWAY: None, PTS_OT8_AWAY: None, PTS_OT9_AWAY: None, PTS_OT10_AWAY: None, LAST_GAME_ID: None, LAST_GAME_DATE_EST: None, LAST_GAME_HOME_TEAM_ID: None, LAST_GAME_HOME_TEAM_CITY: None, LAST_GAME_HOME_TEAM_NAME: None, LAST_GAME_HOME_TEAM_ABBREVIATION: None, LAST_GAME_HOME_TEAM_POINTS: None, LAST_GAME_VISITOR_TEAM_ID: None, LAST_GAME_VISITOR_TEAM_CITY: None, LAST_GAME_VISITOR_TEAM_NAME: None, LAST_GAME_VISITOR_TEAM_CITY1: None, LAST_GAME_VISITOR_TEAM_POINTS: None, HOME_TEAM_WINS: 5.0, HOME_TEAM_LOSSES: 1.0, SERIES_LEADER: St. Louis, VIDEO_AVAILABLE_FLAG: 0.0, PT_AVAILABLE: 0.0, PT_XYZ_AVAILABLE: 0.0, HUSTLE_STATUS: 0.0, HISTORICAL_STATUS: 1.0
+Columns after:  TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY 
+
+Reducing Player_Attributes 
+Columns before with example:  ID: 76002, FIRST_NAME: Zaid, LAST_NAME: Abdul-Aziz, DISPLAY_FIRST_LAST: Zaid Abdul-Aziz, DISPLAY_LAST_COMMA_FIRST: Abdul-Aziz, Zaid, DISPLAY_FI_LAST: Z. Abdul-Aziz, PLAYER_SLUG: zaid-abdul-aziz, BIRTHDATE: 1946-04-07T00:00:00, SCHOOL: Iowa State, COUNTRY: USA, LAST_AFFILIATION: Iowa State/USA, HEIGHT: 81.0, WEIGHT: 235.0, SEASON_EXP: 9, JERSEY: 54, POSITION: Center, ROSTERSTATUS: Inactive, GAMES_PLAYED_CURRENT_SEASON_FLAG: N, TEAM_ID: 1610612745, TEAM_NAME: Rockets, TEAM_ABBREVIATION: HOU, TEAM_CODE: rockets, TEAM_CITY: Houston, PLAYERCODE: HISTADD_zaid_abdul-aziz, FROM_YEAR: 1968, TO_YEAR: 1977, DLEAGUE_FLAG: N, NBA_FLAG: Y, GAMES_PLAYED_FLAG: Y, DRAFT_YEAR: 1968, DRAFT_ROUND: 1, DRAFT_NUMBER: 5, PTS: 9.0, AST: 1.2, REB: 8.0, ALL_STAR_APPEARANCES: 0.0, PIE: None
+Columns after:  ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR 
+
+Reducing Team_Attributes 
+Columns before with example:  ID: 1610612738, ABBREVIATION: BOS, NICKNAME: Celtics, YEARFOUNDED: 1946, CITY: Boston, ARENA: TD Garden, ARENACAPACITY: 18624.0, OWNER: Wyc Grousbeck, GENERALMANAGER: Danny Ainge, HEADCOACH: Brad Stevens, DLEAGUEAFFILIATION: Maine Red Claws, FACEBOOK_WEBSITE_LINK: https://www.facebook.com/bostonceltics, INSTAGRAM_WEBSITE_LINK: https://instagram.com/celtics, TWITTER_WEBSITE_LINK: https://twitter.com/celtics
+Columns after:  ID, YEARFOUNDED, CITY, NICKNAME 
+\end{lstlisting}
+
+\subsubsection*{The script}
+
+\begin{minted}[breaklines]{python}
+# Import frameworks
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import sqlite3
+
+# Connect to databases
+con = sqlite3.connect('../archive/basketball.sqlite') # Read in data
+conOut = sqlite3.connect('../reducedDataset.sqlite') # Write data
+
+# Convert GameDatabase
+def reduceData(tableName: str, columnsToKeep: str):
+    # Make a small request with all columns
+    df = pd.read_sql(f'SELECT * FROM {tableName} LIMIT 10', con)
+    print("Reducing", tableName, "\n")
+    print(
+        "Columns before with example: ",
+        ", ".join([f"{colName}: {val}" for (colName, val) in zip(df.columns, df.iloc[1])]),
+        "\n"
+    )
+    print("Columns after: ", columnsToKeep, "\n")
+    # Request only columnsToKeep
+    df = pd.read_sql(f'SELECT {columnsToKeep} FROM {tableName}', con) 
+    df.to_sql(tableName, conOut, if_exists = "replace")
+
+# convert Game
+columnsToKeep = "TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY"
+reduceData("Game", columnsToKeep)
+
+# convert Player_Attributes
+columnsToKeep = "ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR"
+reduceData("Player_Attributes", columnsToKeep)
+
+# convert Team_Attributes
+columnsToKeep = "ID, YEARFOUNDED, CITY, NICKNAME"
+reduceData("Team_Attributes", columnsToKeep)
+
+\end{minted}
 
 
 \end{document}
