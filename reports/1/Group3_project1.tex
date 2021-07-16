@@ -30,6 +30,12 @@ We are most interested in the PlayerAttributes, TeamAttributes, and Game table w
 Our goal is to build an interesting data set that allows us to answer multiple questions.
 We created a preprocessing script that takes the full database and reduces it.
 The output of the script shows the data columns we decided to keep.
+We utilized stepwise forward selection to select suitable columns.
+The columns we kept are shown in the script output.
+For \texttt{Game}, we wanted to keep a way to identify the games, the involved teams, when it happened and how many points each team scored.
+For \texttt{PlayerAttributes}, we decided to keep the player information, the points scored, the active season and some biometric data like height, weight.
+For \texttt{TeamAttributes}, we decided to keep the team information and the founding year.
+These attributes allow us to answer questions like: How old are Players typically? At which age/height do the score best?
 The script reduces the size of the database to 7MB.
 
 \subsubsection*{Output of the script}

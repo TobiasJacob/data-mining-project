@@ -10,7 +10,6 @@ Go to [https://www.kaggle.com/wyattowalsh/basketball](https://www.kaggle.com/wya
 archive/basketball.sqlite
 archive/daily_execution_pipeline.yml
 ...
-...
 ```
 
 Having the archive in the right place is essential so that everybody uses the same file path. Do not commit the database to GitHub, as the file is too large (>50MB) to be uploaded.
@@ -32,7 +31,7 @@ cd notebooks
 python3 Preprocessing.py
 ```
 
-## Building Project reports
+## Building Project reports manually
 
 For Python code highlighting a latex package called `minted` is needed. This depends on [Pygments](https://pygments.org/). If it is not already installed, it can be installed using
 
@@ -48,3 +47,14 @@ pdflatex -shell-escape Group3_project1.tex
 ```
 
 Worst case: [Overleaf](https://www.overleaf.com/) has Pygments pre-installed.
+
+## Building Project reports with Docker
+
+If you have docker installed, run
+
+```console
+./dockerBuild.sh
+./dockerTex.sh
+```
+
+to compile the report. Building the `Dockerfile` easily takes an hour because of the `texlive-full` installation.

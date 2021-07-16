@@ -1,0 +1,6 @@
+.git
+venv
+archive
+notebooks
+reports
+.ipynb_checkpoints
