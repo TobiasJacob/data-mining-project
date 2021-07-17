@@ -28,30 +28,139 @@ breaklines=true
 The dataset measures 967 MB in size and contains multiple tables.
 We are most interested in the PlayerAttributes, TeamAttributes, and Game table with 37, 7, and 149 columns, respectively.
 Our goal is to build an interesting data set that allows us to answer multiple questions.
-We created a preprocessing script that takes the full database and reduces it.
+We created a preprocessing script that takes the full database and reduces it, both in terms of attributes we found interesting and rows.
 The output of the script shows the data columns we decided to keep.
 We utilized stepwise forward selection to select suitable columns.
-The columns we kept are shown in the script output.
-For \texttt{Game}, we wanted to keep a way to identify the games, the involved teams, when it happened and how many points each team scored.
+The columns and rows we kept are shown in the script output.
+For \texttt{Game}, we wanted to keep a way to identify the games, the involved teams, when it happened and how many points each team scored, as well as how many shots have been taken during the game and how many were scored. The attributes related to the score of each team are granular and divided by Field Goals, 3-Pointers and Free throws, both for attempted and made shots.
 For \texttt{PlayerAttributes}, we decided to keep the player information, the points scored, the active season and some biometric data like height, weight.
 For \texttt{TeamAttributes}, we decided to keep the team information and the founding year.
-These attributes allow us to answer questions like: How old are Players typically? At which age/height do the score best?
+These attributes allow us to answer questions like: How old are Players typically? At which age/height do the score best? How the presence of a player influences its team in terms of Field Goals Made and Field Goals attempted?
+
+Some of the rows were containing missing values, mostly because old games do not have some of the attributes recorded. As our dataset is quiet abundant, we decided to drop the rows with missing values on the attributes we found interesting and for which we filtered our columns, in order to avoid an injection of bias to our dataset. All the details about the filtering operations are present in the script output below. 
+
+A we mentioned in the last email sent to Professor Bagui, we have decided to not drop the number of rows under 1500. One of the most interesting properties of our dataset is that is indeed complete in the historical records of the games, giving it a drastic cut would, instead of simplifying things, complicate it for us. The final tables contain 41456, 4384, 30 rows respectively for Game, PlayerAttributes and TeamAttributes.
+
 The script reduces the size of the database to 7MB.
 
 \subsubsection*{Output of the script}
 
 \begin{lstlisting}
-Reducing Game 
-Columns before with example:  GAME_ID: 0024600003, SEASON_ID: 21946, TEAM_ID_HOME: 1610610034, TEAM_ABBREVIATION_HOME: BOM, TEAM_NAME_HOME: St. Louis Bombers, GAME_DATE: 1946-11-02, MATCHUP_HOME: BOM vs. PIT, WL_HOME: W, MIN_HOME: 0, FGM_HOME: 20.0, FGA_HOME: 59.0, FG_PCT_HOME: 0.339, FG3M_HOME: None, FG3A_HOME: None, FG3_PCT_HOME: None, FTM_HOME: 16.0, FTA_HOME: nan, FT_PCT_HOME: nan, OREB_HOME: None, DREB_HOME: None, REB_HOME: None, AST_HOME: None, STL_HOME: None, BLK_HOME: None, TOV_HOME: None, PF_HOME: 21.0, PTS_HOME: 56, PLUS_MINUS_HOME: 5, VIDEO_AVAILABLE_HOME: 0, TEAM_ID_AWAY: 1610610031, TEAM_ABBREVIATION_AWAY: PIT, TEAM_NAME_AWAY: Pittsburgh Ironmen, MATCHUP_AWAY: PIT @ BOM, WL_AWAY: L, MIN_AWAY: 0, FGM_AWAY: 16.0, FGA_AWAY: 72.0, FG_PCT_AWAY: 0.222, FG3M_AWAY: None, FG3A_AWAY: None, FG3_PCT_AWAY: None, FTM_AWAY: 19.0, FTA_AWAY: nan, FT_PCT_AWAY: nan, OREB_AWAY: None, DREB_AWAY: None, REB_AWAY: None, AST_AWAY: None, STL_AWAY: None, BLK_AWAY: None, TOV_AWAY: None, PF_AWAY: 25.0, PTS_AWAY: 51, PLUS_MINUS_AWAY: -5, VIDEO_AVAILABLE_AWAY: 0, GAME_DATE_EST: 1946-11-02T00:00:00, GAME_SEQUENCE: None, GAME_STATUS_ID: 3, GAME_STATUS_TEXT: , GAMECODE: 19461102/PITBOM, HOME_TEAM_ID: 1610610034, VISITOR_TEAM_ID: 1610610031, SEASON: 1946, LIVE_PERIOD: 4.0, LIVE_PC_TIME: None, NATL_TV_BROADCASTER_ABBREVIATION: None, LIVE_PERIOD_TIME_BCAST: Q4  - , WH_STATUS: 1.0, TEAM_CITY_HOME: None, PTS_PAINT_HOME: None, PTS_2ND_CHANCE_HOME: None, PTS_FB_HOME: None, LARGEST_LEAD_HOME: None, LEAD_CHANGES_HOME: None, TIMES_TIED_HOME: None, TEAM_TURNOVERS_HOME: None, TOTAL_TURNOVERS_HOME: None, TEAM_REBOUNDS_HOME: None, PTS_OFF_TO_HOME: None, TEAM_CITY_AWAY: None, PTS_PAINT_AWAY: None, PTS_2ND_CHANCE_AWAY: None, PTS_FB_AWAY: None, LARGEST_LEAD_AWAY: None, LEAD_CHANGES_AWAY: None, TIMES_TIED_AWAY: None, TEAM_TURNOVERS_AWAY: None, TOTAL_TURNOVERS_AWAY: None, TEAM_REBOUNDS_AWAY: None, PTS_OFF_TO_AWAY: None, LEAGUE_ID: None, GAME_DATE_DAY: SATURDAY, NOVEMBER 2, 1946, ATTENDANCE: None, GAME_TIME: , TEAM_CITY_NAME_HOME: St. Louis, TEAM_NICKNAME_HOME: Bombers, TEAM_WINS_LOSSES_HOME: -, PTS_QTR1_HOME: 16, PTS_QTR2_HOME: 16, PTS_QTR3_HOME: 18, PTS_QTR4_HOME: 6, PTS_OT1_HOME: None, PTS_OT2_HOME: None, PTS_OT3_HOME: None, PTS_OT4_HOME: None, PTS_OT5_HOME: None, PTS_OT6_HOME: None, PTS_OT7_HOME: None, PTS_OT8_HOME: None, PTS_OT9_HOME: None, PTS_OT10_HOME: None, PTS_HOME_y: 56.0, TEAM_CITY_NAME_AWAY: Pittsburgh, TEAM_NICKNAME_AWAY: Ironmen, TEAM_WINS_LOSSES_AWAY: -, PTS_QTR1_AWAY: 5, PTS_QTR2_AWAY: 15, PTS_QTR3_AWAY: 17, PTS_QTR4_AWAY: 14, PTS_OT1_AWAY: None, PTS_OT2_AWAY: None, PTS_OT3_AWAY: None, PTS_OT4_AWAY: None, PTS_OT5_AWAY: None, PTS_OT6_AWAY: None, PTS_OT7_AWAY: None, PTS_OT8_AWAY: None, PTS_OT9_AWAY: None, PTS_OT10_AWAY: None, LAST_GAME_ID: None, LAST_GAME_DATE_EST: None, LAST_GAME_HOME_TEAM_ID: None, LAST_GAME_HOME_TEAM_CITY: None, LAST_GAME_HOME_TEAM_NAME: None, LAST_GAME_HOME_TEAM_ABBREVIATION: None, LAST_GAME_HOME_TEAM_POINTS: None, LAST_GAME_VISITOR_TEAM_ID: None, LAST_GAME_VISITOR_TEAM_CITY: None, LAST_GAME_VISITOR_TEAM_NAME: None, LAST_GAME_VISITOR_TEAM_CITY1: None, LAST_GAME_VISITOR_TEAM_POINTS: None, HOME_TEAM_WINS: 5.0, HOME_TEAM_LOSSES: 1.0, SERIES_LEADER: St. Louis, VIDEO_AVAILABLE_FLAG: 0.0, PT_AVAILABLE: 0.0, PT_XYZ_AVAILABLE: 0.0, HUSTLE_STATUS: 0.0, HISTORICAL_STATUS: 1.0
-Columns after:  TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY 
+---Reducing Game ---
 
-Reducing Player_Attributes 
-Columns before with example:  ID: 76002, FIRST_NAME: Zaid, LAST_NAME: Abdul-Aziz, DISPLAY_FIRST_LAST: Zaid Abdul-Aziz, DISPLAY_LAST_COMMA_FIRST: Abdul-Aziz, Zaid, DISPLAY_FI_LAST: Z. Abdul-Aziz, PLAYER_SLUG: zaid-abdul-aziz, BIRTHDATE: 1946-04-07T00:00:00, SCHOOL: Iowa State, COUNTRY: USA, LAST_AFFILIATION: Iowa State/USA, HEIGHT: 81.0, WEIGHT: 235.0, SEASON_EXP: 9, JERSEY: 54, POSITION: Center, ROSTERSTATUS: Inactive, GAMES_PLAYED_CURRENT_SEASON_FLAG: N, TEAM_ID: 1610612745, TEAM_NAME: Rockets, TEAM_ABBREVIATION: HOU, TEAM_CODE: rockets, TEAM_CITY: Houston, PLAYERCODE: HISTADD_zaid_abdul-aziz, FROM_YEAR: 1968, TO_YEAR: 1977, DLEAGUE_FLAG: N, NBA_FLAG: Y, GAMES_PLAYED_FLAG: Y, DRAFT_YEAR: 1968, DRAFT_ROUND: 1, DRAFT_NUMBER: 5, PTS: 9.0, AST: 1.2, REB: 8.0, ALL_STAR_APPEARANCES: 0.0, PIE: None
-Columns after:  ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR 
+Columns before:  GAME_ID, SEASON_ID, TEAM_ID_HOME, TEAM_ABBREVIATION_HOME, TEAM_NAME_HOME, GAME_DATE, MATCHUP_HOME, WL_HOME, MIN_HOME, FGM_HOME, FGA_HOME, FG_PCT_HOME, FG3M_HOME, FG3A_HOME, FG3_PCT_HOME, FTM_HOME, FTA_HOME, FT_PCT_HOME, OREB_HOME, DREB_HOME, REB_HOME, AST_HOME, STL_HOME, BLK_HOME, TOV_HOME, PF_HOME, PTS_HOME, PLUS_MINUS_HOME, VIDEO_AVAILABLE_HOME, TEAM_ID_AWAY, TEAM_ABBREVIATION_AWAY, TEAM_NAME_AWAY, MATCHUP_AWAY, WL_AWAY, MIN_AWAY, FGM_AWAY, FGA_AWAY, FG_PCT_AWAY, FG3M_AWAY, FG3A_AWAY, FG3_PCT_AWAY, FTM_AWAY, FTA_AWAY, FT_PCT_AWAY, OREB_AWAY, DREB_AWAY, REB_AWAY, AST_AWAY, STL_AWAY, BLK_AWAY, TOV_AWAY, PF_AWAY, PTS_AWAY, PLUS_MINUS_AWAY, VIDEO_AVAILABLE_AWAY, GAME_DATE_EST, GAME_SEQUENCE, GAME_STATUS_ID, GAME_STATUS_TEXT, GAMECODE, HOME_TEAM_ID, VISITOR_TEAM_ID, SEASON, LIVE_PERIOD, LIVE_PC_TIME, NATL_TV_BROADCASTER_ABBREVIATION, LIVE_PERIOD_TIME_BCAST, WH_STATUS, TEAM_CITY_HOME, PTS_PAINT_HOME, PTS_2ND_CHANCE_HOME, PTS_FB_HOME, LARGEST_LEAD_HOME, LEAD_CHANGES_HOME, TIMES_TIED_HOME, TEAM_TURNOVERS_HOME, TOTAL_TURNOVERS_HOME, TEAM_REBOUNDS_HOME, PTS_OFF_TO_HOME, TEAM_CITY_AWAY, PTS_PAINT_AWAY, PTS_2ND_CHANCE_AWAY, PTS_FB_AWAY, LARGEST_LEAD_AWAY, LEAD_CHANGES_AWAY, TIMES_TIED_AWAY, TEAM_TURNOVERS_AWAY, TOTAL_TURNOVERS_AWAY, TEAM_REBOUNDS_AWAY, PTS_OFF_TO_AWAY, LEAGUE_ID, GAME_DATE_DAY, ATTENDANCE, GAME_TIME, TEAM_CITY_NAME_HOME, TEAM_NICKNAME_HOME, TEAM_WINS_LOSSES_HOME, PTS_QTR1_HOME, PTS_QTR2_HOME, PTS_QTR3_HOME, PTS_QTR4_HOME, PTS_OT1_HOME, PTS_OT2_HOME, PTS_OT3_HOME, PTS_OT4_HOME, PTS_OT5_HOME, PTS_OT6_HOME, PTS_OT7_HOME, PTS_OT8_HOME, PTS_OT9_HOME, PTS_OT10_HOME, PTS_HOME_y, TEAM_CITY_NAME_AWAY, TEAM_NICKNAME_AWAY, TEAM_WINS_LOSSES_AWAY, PTS_QTR1_AWAY, PTS_QTR2_AWAY, PTS_QTR3_AWAY, PTS_QTR4_AWAY, PTS_OT1_AWAY, PTS_OT2_AWAY, PTS_OT3_AWAY, PTS_OT4_AWAY, PTS_OT5_AWAY, PTS_OT6_AWAY, PTS_OT7_AWAY, PTS_OT8_AWAY, PTS_OT9_AWAY, PTS_OT10_AWAY, LAST_GAME_ID, LAST_GAME_DATE_EST, LAST_GAME_HOME_TEAM_ID, LAST_GAME_HOME_TEAM_CITY, LAST_GAME_HOME_TEAM_NAME, LAST_GAME_HOME_TEAM_ABBREVIATION, LAST_GAME_HOME_TEAM_POINTS, LAST_GAME_VISITOR_TEAM_ID, LAST_GAME_VISITOR_TEAM_CITY, LAST_GAME_VISITOR_TEAM_NAME, LAST_GAME_VISITOR_TEAM_CITY1, LAST_GAME_VISITOR_TEAM_POINTS, HOME_TEAM_WINS, HOME_TEAM_LOSSES, SERIES_LEADER, VIDEO_AVAILABLE_FLAG, PT_AVAILABLE, PT_XYZ_AVAILABLE, HUSTLE_STATUS, HISTORICAL_STATUS 
 
-Reducing Team_Attributes 
-Columns before with example:  ID: 1610612738, ABBREVIATION: BOS, NICKNAME: Celtics, YEARFOUNDED: 1946, CITY: Boston, ARENA: TD Garden, ARENACAPACITY: 18624.0, OWNER: Wyc Grousbeck, GENERALMANAGER: Danny Ainge, HEADCOACH: Brad Stevens, DLEAGUEAFFILIATION: Maine Red Claws, FACEBOOK_WEBSITE_LINK: https://www.facebook.com/bostonceltics, INSTAGRAM_WEBSITE_LINK: https://instagram.com/celtics, TWITTER_WEBSITE_LINK: https://twitter.com/celtics
-Columns after:  ID, YEARFOUNDED, CITY, NICKNAME 
+Columns after reduction:  TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY, FGM_HOME, FGA_HOME, FG3M_HOME, FG3A_HOME, FTM_HOME, FTA_HOME, FGM_AWAY, FGA_AWAY, FG3M_AWAY, FG3A_AWAY, FTM_AWAY, FTA_AWAY 
+
+Total number of rows:  62448 
+
+Null values found:  TEAM_ID_HOME            0
+TEAM_NAME_HOME          0
+TEAM_ID_AWAY            0
+TEAM_NAME_AWAY          0
+GAME_DATE               0
+SEASON                  0
+HOME_TEAM_WINS         69
+HOME_TEAM_LOSSES       69
+PTS_HOME                0
+PTS_AWAY                0
+FGM_HOME               18
+FGA_HOME            17862
+FG3M_HOME           15657
+FG3A_HOME           20921
+FTM_HOME               21
+FTA_HOME             3036
+FGM_AWAY               15
+FGA_AWAY            17861
+FG3M_AWAY           15657
+FG3A_AWAY           20921
+FTM_AWAY               15
+FTA_AWAY             3033
+dtype: int64 
+
+Total number of rows after dropna:  41456 
+
+Null values found after dropna (testing):  TEAM_ID_HOME        0
+TEAM_NAME_HOME      0
+TEAM_ID_AWAY        0
+TEAM_NAME_AWAY      0
+GAME_DATE           0
+SEASON              0
+HOME_TEAM_WINS      0
+HOME_TEAM_LOSSES    0
+PTS_HOME            0
+PTS_AWAY            0
+FGM_HOME            0
+FGA_HOME            0
+FG3M_HOME           0
+FG3A_HOME           0
+FTM_HOME            0
+FTA_HOME            0
+FGM_AWAY            0
+FGA_AWAY            0
+FG3M_AWAY           0
+FG3A_AWAY           0
+FTM_AWAY            0
+FTA_AWAY            0
+dtype: int64 
+
+---Reducing Player_Attributes ---
+
+Columns before:  ID, FIRST_NAME, LAST_NAME, DISPLAY_FIRST_LAST, DISPLAY_LAST_COMMA_FIRST, DISPLAY_FI_LAST, PLAYER_SLUG, BIRTHDATE, SCHOOL, COUNTRY, LAST_AFFILIATION, HEIGHT, WEIGHT, SEASON_EXP, JERSEY, POSITION, ROSTERSTATUS, GAMES_PLAYED_CURRENT_SEASON_FLAG, TEAM_ID, TEAM_NAME, TEAM_ABBREVIATION, TEAM_CODE, TEAM_CITY, PLAYERCODE, FROM_YEAR, TO_YEAR, DLEAGUE_FLAG, NBA_FLAG, GAMES_PLAYED_FLAG, DRAFT_YEAR, DRAFT_ROUND, DRAFT_NUMBER, PTS, AST, REB, ALL_STAR_APPEARANCES, PIE 
+
+Columns after reduction:  ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR 
+
+Total number of rows:  4500 
+
+Null values found:  ID              0
+FIRST_NAME      0
+LAST_NAME       0
+BIRTHDATE       0
+HEIGHT         97
+WEIGHT        101
+PTS            15
+TEAM_ID         0
+TEAM_NAME       0
+FROM_YEAR       0
+TO_YEAR         0
+dtype: int64 
+
+Total number of rows after dropna:  4384 
+
+Null values found after dropna (testing):  ID            0
+FIRST_NAME    0
+LAST_NAME     0
+BIRTHDATE     0
+HEIGHT        0
+WEIGHT        0
+PTS           0
+TEAM_ID       0
+TEAM_NAME     0
+FROM_YEAR     0
+TO_YEAR       0
+dtype: int64 
+
+---Reducing Team_Attributes ---
+
+Columns before:  ID, ABBREVIATION, NICKNAME, YEARFOUNDED, CITY, ARENA, ARENACAPACITY, OWNER, GENERALMANAGER, HEADCOACH, DLEAGUEAFFILIATION, FACEBOOK_WEBSITE_LINK, INSTAGRAM_WEBSITE_LINK, TWITTER_WEBSITE_LINK 
+
+Columns after reduction:  ID, YEARFOUNDED, CITY, NICKNAME 
+
+Total number of rows:  30 
+
+Null values found:  ID             0
+YEARFOUNDED    0
+CITY           0
+NICKNAME       0
+dtype: int64 
+
+Total number of rows after dropna:  30 
+
+Null values found after dropna (testing):  ID             0
+YEARFOUNDED    0
+CITY           0
+NICKNAME       0
+dtype: int64 
 \end{lstlisting}
 
 \subsubsection*{The script}
@@ -64,26 +173,25 @@ import pandas as pd
 import sqlite3
 
 # Connect to databases
-con = sqlite3.connect('../archive/basketball.sqlite') # Read in data
-conOut = sqlite3.connect('../reducedDataset.sqlite') # Write data
+con = sqlite3.connect('basketball.sqlite') # Read in data
+conOut = sqlite3.connect('reducedDataset.sqlite') # Write data
 
 # Convert GameDatabase
 def reduceData(tableName: str, columnsToKeep: str):
-    # Make a small request with all columns
-    df = pd.read_sql(f'SELECT * FROM {tableName} LIMIT 10', con)
-    print("Reducing", tableName, "\n")
-    print(
-        "Columns before with example: ",
-        ", ".join([f"{colName}: {val}" for (colName, val) in zip(df.columns, df.iloc[1])]),
-        "\n"
-    )
-    print("Columns after: ", columnsToKeep, "\n")
-    # Request only columnsToKeep
-    df = pd.read_sql(f'SELECT {columnsToKeep} FROM {tableName}', con) 
+    df = pd.read_sql(f'SELECT * FROM {tableName} LIMIT 10', con) # Make a small request with all columns
+    print("---Reducing", tableName, "---\n")
+    print("Columns before: ", ", ".join([f"{colName}" for (colName, val) in zip(df.columns, df.iloc[1])]), "\n")
+    print("Columns after reduction: ", columnsToKeep, "\n")
+    df = pd.read_sql(f'SELECT {columnsToKeep} FROM {tableName}', con) # Request only columnsToKeep
+    print("Total number of rows: ", df.shape[0], "\n") # Print the number of rows 
+    print("Null values found: ", df.isnull().sum(), "\n") # Count null values found by attribute
+    df = df.dropna() # Drop rows with missing values
+    print("Total number of rows after dropna: ", df.shape[0], "\n")
+    print("Null values found after dropna (testing): ", df.isnull().sum(), "\n")
     df.to_sql(tableName, conOut, if_exists = "replace")
-
+    
 # convert Game
-columnsToKeep = "TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY"
+columnsToKeep = "TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY, FGM_HOME, FGA_HOME, FG3M_HOME, FG3A_HOME, FTM_HOME, FTA_HOME, FGM_AWAY, FGA_AWAY, FG3M_AWAY, FG3A_AWAY, FTM_AWAY, FTA_AWAY"
 reduceData("Game", columnsToKeep)
 
 # convert Player_Attributes
