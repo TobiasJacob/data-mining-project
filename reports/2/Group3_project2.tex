@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.8in]{geometry}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{listings} % linebreaks in lstlisting
+\usepackage{minted} % python code
+
+
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
+\begin{document}
+
+\title{Group 3 Project Part 2}
+\author{
+    Kayla Wankowski (kmw32@students.uwf.edu)\\
+    Muddasar Ali (ma229@students.uwf.edu)\\
+    Raffaele Galliera (rg101@students.uwf.edu)\\
+    Tobias Jacob (tj75@students.uwf.edu)
+}
+
+\maketitle
+
+\section{Data cubing}
+
+\begin{lstlisting}
+    Game:  TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAME_DATE, SEASON, HOME_TEAM_WINS, HOME_TEAM_LOSSES, PTS_HOME, PTS_AWAY 
+    Player_Attributes:  ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR 
+    Team_Attributes:  ID, YEARFOUNDED, CITY, NICKNAME 
+\end{lstlisting}
+    
+With the given table, we are trying to construct the following data cube:
+
+\begin{lstlisting}
+Dimensions:
+- Player < Team
+- Game < Season
+Values:
+- PointsScored[Player, Game]
+- Height[Player]
+- Weight[Player]
+- Birthdate[Player]
+- IsActive[Player, Season]
+\end{lstlisting}
+
+\end{document}

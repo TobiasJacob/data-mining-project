@@ -5,7 +5,7 @@ import pandas as pd
 import sqlite3
 
 # %% Connect to databases
-con = sqlite3.connect('basketball.sqlite') # Read in data
+con = sqlite3.connect('../archive/basketball.sqlite') # Read in data
 conOut = sqlite3.connect('reducedDataset.sqlite') # Write data
 
 # %% Convert GameDatabase
