@@ -17,9 +17,12 @@ def reduceData(tableName: str, columnsToKeep: str):
     df = pd.read_sql(f'SELECT {columnsToKeep} FROM {tableName}', con) # Request only columnsToKeep
     print("Total number of rows: ", df.shape[0], "\n") # Print the number of rows
     print("Null values found: ", df.isnull().sum(), "\n") # Count null values found by attribute
-    df = df.dropna() # Drop rows with missing values
-    print("Total number of rows after dropna: ", df.shape[0], "\n")
-    print("Null values found after dropna (testing): ", df.isnull().sum(), "\n")
+
+    print(df.dtypes)
+    # Dropping nan values was required for project part 1, but is now done in the datacubes
+    # df = df.dropna() # Drop rows with missing values
+    # print("Total number of rows after dropna: ", df.shape[0], "\n")
+    # print("Null values found after dropna (testing): ", df.isnull().sum(), "\n")
     df.to_sql(tableName, conOut, if_exists = "replace")
 
 # %% convert Game
@@ -27,9 +30,15 @@ columnsToKeep = "TEAM_ID_HOME, TEAM_NAME_HOME, TEAM_ID_AWAY, TEAM_NAME_AWAY, GAM
 reduceData("Game", columnsToKeep)
 
 # %% convert Player_Attributes
-columnsToKeep = "ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR"
+columnsToKeep = "ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, POSITION, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR"
 reduceData("Player_Attributes", columnsToKeep)
 
 # %% convert Team_Attributes
 columnsToKeep = "ID, YEARFOUNDED, CITY, NICKNAME"
 reduceData("Team_Attributes", columnsToKeep)
+
+# %% convert Player_Salary
+columnsToKeep = "namePlayer, value, slugSeason"
+reduceData("Player_Salary", columnsToKeep)
+
+# %%

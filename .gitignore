@@ -422,3 +422,4 @@ TSWLatexianTemp*
 archive
 *.pdf
 reducedDataset.sqlite
+*.csv
