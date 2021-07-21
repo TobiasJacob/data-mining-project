@@ -31,6 +31,19 @@ cd notebooks
 python3 Preprocessing.py
 ```
 
+## Data cubing and figure generation
+
+The project report depends on figures, that are generated through the Datacubing notebook.
+Do not submit the figures to Github, as they can automatically be updated in the project report if we decide to change anything in the datacubing script.
+Run
+
+```console
+cd notebooks
+python3 Datacubing.py
+```
+
+to generate the figures. It will also generate 4 files called `cubeGames.csv`, `cubePlayers.csv`, `biometricCube.csv` and `biometricCubeRaw.csv` that are used in subsequent analysis notebooks.
+
 ## Building Project reports manually
 
 For Python code highlighting a latex package called `minted` is needed. This depends on [Pygments](https://pygments.org/). If it is not already installed, it can be installed using

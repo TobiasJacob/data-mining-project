@@ -7,6 +7,7 @@ import sqlite3
 import datetime
 import seaborn as sns
 from sklearn.cluster import KMeans
+from pathlib import Path
 
 sns.set_style("whitegrid")
 
@@ -71,6 +72,8 @@ cubePlayers["AGE"] = (datetime.datetime.now() - dfPlayers["BIRTHDATE"]) / dateti
 cubePlayers["FROM_YEAR_AGE"] = dfPlayers["FROM_YEAR"] - dfPlayers["BIRTHDATE"].dt.year
 cubePlayers["TO_YEAR_AGE"] = dfPlayers["TO_YEAR"] - dfPlayers["BIRTHDATE"].dt.year
 cubePlayers["ACTIVE_YEARS"] = dfPlayers["TO_YEAR"] - dfPlayers["FROM_YEAR"]
+cubePlayers.loc[cubePlayers["POSITION"] == "Center-Forward", "POSITION"] = "Forward-Center"
+cubePlayers.loc[cubePlayers["POSITION"] == "Guard-Forward", "POSITION"] = "Forward-Guard"
 cubePlayers.tail()
 
 cubePlayers.to_csv("cubePlayers.csv")
@@ -88,9 +91,11 @@ def discretize(cube, key: str, labels: List[str]):
 
     sns.displot(col, kind="kde")
     plt.plot(kmeans.cluster_centers_, np.zeros_like(kmeans.cluster_centers_), "o")
+    Path("../reports/2/figures/disc").mkdir(parents=True, exist_ok=True)
+    plt.savefig(f"../reports/2/figures/disc/{key}.eps")
 
 # %%
-biometricCube = cubePlayers[["HEIGHT", "WEIGHT", "PTS", "POSITION", "ACTIVE_YEARS"]].copy()
+biometricCube = cubePlayers[["FULL_NAME", "TEAM_NAME", "HEIGHT", "WEIGHT", "PTS", "POSITION", "ACTIVE_YEARS"]].copy()
 biometricCube.to_csv("biometricCubeRaw.csv")
 biometricCube
 # %%

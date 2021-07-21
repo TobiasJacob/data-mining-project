@@ -31,19 +31,159 @@ breaklines=true
     Player_Attributes:  ID, FIRST_NAME, LAST_NAME, BIRTHDATE, HEIGHT, WEIGHT, PTS, TEAM_ID, TEAM_NAME, FROM_YEAR, TO_YEAR 
     Team_Attributes:  ID, YEARFOUNDED, CITY, NICKNAME 
 \end{lstlisting}
-    
-With the given table, we are trying to construct the following data cube:
 
+\subsection{Cube of games}
+With the given table, we construct the \texttt{cubeGames}.
 \begin{lstlisting}
 Dimensions:
-- Player < Team
-- Game < Season
+- TEAM_NAME_HOME
+- TEAM_NAME_AWAY
+- GAME_DATE < SEASON
 Values:
-- PointsScored[Player, Game]
-- Height[Player]
-- Weight[Player]
-- Birthdate[Player]
-- IsActive[Player, Season]
+- HOME_TEAM_WINS
+- HOME_TEAM_LOSSES
+- PTS_HOME
+- PTS_AWAY
+- FGM_HOME
+- FGA_HOME
+- FG3M_HOME
+- FG3A_HOME
+- FTM_HOME
+- FTA_HOME
+- FGM_AWAY
+- FGA_AWAY
+- FG3M_AWAY
+- FG3A_AWAY
+- FTM_AWAY
+- FTA_AWAY
+- YEARFOUNDEDHOME_TEAM
+- CITYHOME_TEAM
+- NICKNAMEHOME_TEAM
+- YEARFOUNDEDAWAY_TEAM
+- CITYAWAY_TEAM
+- NICKNAMEAWAY_TEAM
 \end{lstlisting}
+\texttt{GAME\_DATE} and \texttt{SEASON} are a concept hierarchy.
+\texttt{HOME} means the team at whose stadion the game happens.
+\texttt{AWAY} is the team that visits.
+\texttt{WINS} and \texttt{LOSSES} specifiy the rounds won or lost.
+\texttt{PTS} are the points scored.
+\texttt{FGM} is the number of field goals (2 and 3pts) made.
+\texttt{FG3M} is the number of 3pt field goals attempted.
+\texttt{FA} is the number of field goals made.
+\texttt{FG3A} is the number of 3pt field goals attempted.
+\texttt{FTA} is the number free throws attempted.
+\texttt{FTM} is the number free throws made. Free throws are worth one point.
+The other columns are self-explainatory.
+
+\subsection{Cube of players}
+This is the construction of \texttt{cubePlayers}.
+\begin{lstlisting}
+Dimensions
+- FULL_NAME < TEAM_NAME
+- POSITION
+- AGE
+- FROM_YEAR_AGE
+- TO_YEAR_AGE
+
+Values
+- FIRST_NAME
+- LAST_NAME
+- HEIGHT
+- WEIGHT
+- PTS
+- FROM_YEAR
+- TO_YEAR
+- value
+- YEARFOUNDED
+- CITY
+- NICKNAME
+- BIRTHDATE
+- ACTIVE_YEARS
+\end{lstlisting}
+\texttt{FULL\_NAME} and \texttt{TEAM\_NAME} form a concept hierarchy.
+\texttt{FROM\_YEAR} is when the player started playing in the NBA with the age \texttt{FROM\_YEAR\_AGE}.
+\texttt{TO\_YEAR} specifies when the player left the NBA.
+\texttt{value} is the value of the player.
+\texttt{ACTIVE\_YEARS} is the time the player spend at the NBA.
+
+\subsection{Biometrics cube}
+For later project submissions, categorial data attributes are needed.
+We construct a cube with biometric data of the players.
+To discretize scalar values like \texttt{HEIGHT} or \texttt{WEIGHT}, we utilize 1 dimensional k-Means clustering, which is already implemented.
+\begin{lstlisting}
+Dimensions:
+- FULL_NAME < TEAM_NAME
+- POSITION: [Guard, Forward-Guard, Forward, Forward-Center, Center]
+- ACTIVE_YEARS: [Short, Middle, Long]
+
+Values:
+- HEIGHT: [Short, Middle, Tall]
+- WEIGHT: [Light, Middle, Heavy]
+- PTS: [LessScores, MiddleScores, MoreScores, ManyScores]
+\end{lstlisting}
+This cube allows us to calculate t- and d-weights.
+
+\section{Figures}
+We added some interesting figures
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/ACTIVE_YEARS_over_PTS.eps}
+    \caption{Scored points over active years based on player position.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/ACTIVE_YEARS_over_PTS2.eps}
+    \caption{Regression on points per active year.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/HEIGHT_over_PTS2.eps}
+    \caption{Taller player does not necessarily mean higher scores.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/NBA_GROWTH.eps}
+    \caption{How the nba grew over time.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/START_VS_END_AGE.eps}
+    \caption{At which age players join and leave the NBA.}
+\end{figure}
+
+\clearpage
+
+\section{Result from clustering}
+
+We discretized values.
+To get a better understanding, we visualized each dimension that was discretized.
+We show the distribution of the values, and the cluster centers at the bottom of the graph.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/disc/ACTIVE_YEARS.eps}
+    \caption{Distribution of active years and cluster centers.}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/disc/HEIGHT.eps}
+    \caption{Distribution of player height and cluster centers.}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/disc/PTS.eps}
+    \caption{Distribution of player points and cluster centers.}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/disc/WEIGHT.eps}
+    \caption{Distribution of player weight and cluster centers.}
+\end{figure}
 
 \end{document}
