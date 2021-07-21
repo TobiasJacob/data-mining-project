@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.8in]{geometry}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{listings} % linebreaks in lstlisting
+\usepackage{minted} % python code
+\usepackage{booktabs} % tables
+
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
+\begin{document}
+
+\title{Group 3 Project Part 4}
+\author{
+    Kayla Wankowski (kmw32@students.uwf.edu)\\
+    Muddasar Ali (ma229@students.uwf.edu)\\
+    Raffaele Galliera (rg101@students.uwf.edu)\\
+    Tobias Jacob (tj75@students.uwf.edu)
+}
+
+\maketitle
+
+\section{Data mining}
+
+We used a script to infer rules.
+A rule is recognized as a rule if the conditional entropy given the fact is below 1.
+
+\begin{lstlisting}
+if HEIGHT=Short, then the player has WEIGHT=['Light']. Conf: 51%
+if HEIGHT=Middle, then the player has WEIGHT=['Middle']. Conf: 81%
+if HEIGHT=Tall, then the player has WEIGHT=['Heavy']. Conf: 71%
+if HEIGHT=Short, then the player has ACTIVE_YEARS=['Short']. Conf: 92%
+if HEIGHT=Middle, then the player has ACTIVE_YEARS=['Short']. Conf: 98%
+if WEIGHT=Light, then the player has HEIGHT=['Short']. Conf: 55%
+if WEIGHT=Middle, then the player has HEIGHT=['Middle']. Conf: 93%
+if WEIGHT=Heavy, then the player has HEIGHT=['Tall']. Conf: 51%
+if WEIGHT=Light, then the player has ACTIVE_YEARS=['Short']. Conf: 91%
+if WEIGHT=Middle, then the player has ACTIVE_YEARS=['Short']. Conf: 99%
+if PTS=LessScores, then the player has ACTIVE_YEARS=['Short']. Conf: 50%
+if PTS=ManyScores, then the player has ACTIVE_YEARS=['Long']. Conf: 83%
+if ACTIVE_YEARS=Short, then the player has PTS=['LessScores']. Conf: 85%
+\end{lstlisting}
+There are some wrong interferences, because the probability of a player having ``ACTIVE\_YEARS == Short'' is very high in general.
+A better measure is therefore the information gain.
+The information gain tells us, how much more we know about the output distribution, given the fact.
+\begin{lstlisting}
+if HEIGHT=Short, then the probability of WEIGHT = ['Light'] increases, and WEIGHT = ['Middle' 'Heavy'] decreases. Conf: 55%
+if HEIGHT=Middle, then the probability of WEIGHT = ['Middle'] increases, and WEIGHT = ['Light' 'Heavy'] decreases. Conf: 25%
+if HEIGHT=Tall, then the probability of WEIGHT = ['Heavy'] increases, and WEIGHT = ['Light' 'Middle'] decreases. Conf: 35%
+if WEIGHT=Light, then the probability of HEIGHT = ['Short'] increases, and HEIGHT = ['Middle' 'Tall'] decreases. Conf: 54%
+if WEIGHT=Middle, then the probability of HEIGHT = ['Middle'] increases, and HEIGHT = ['Short' 'Tall'] decreases. Conf: 16%
+if WEIGHT=Heavy, then the probability of HEIGHT = ['Tall'] increases, and HEIGHT = ['Short' 'Middle'] decreases. Conf: 58%
+if PTS=LessScores, then the probability of ACTIVE_YEARS = ['Short'] increases, and ACTIVE_YEARS = ['Middle' 'Long'] decreases. Conf: 50%
+if PTS=ManyScores, then the probability of ACTIVE_YEARS = ['Long'] increases, and ACTIVE_YEARS = ['Short'] decreases. Conf: 17%
+if ACTIVE_YEARS=Short, then the probability of PTS = ['LessScores'] increases, and PTS = ['MiddleScores' 'MoreScores' 'ManyScores'] decreases. Conf: 36%
+\end{lstlisting}
+
+\section{d-Weights}
+
+\input{tablelist}
+
+\end{document}

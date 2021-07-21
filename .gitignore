@@ -424,3 +424,6 @@ archive
 reducedDataset.sqlite
 *.csv
 figures
+tables
+tablelist.tex
+

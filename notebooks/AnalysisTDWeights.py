@@ -5,6 +5,8 @@ import pandas as pd
 import sqlite3
 import datetime
 import seaborn as sns
+from itertools import product
+from pathlib import Path
 sns.set_style("whitegrid")
 # %%
 cubeGames = pd.read_csv("cubeGames.csv")
@@ -79,7 +81,7 @@ def get_tables(col1, col2, filterMode="IG"):
             if ent < 1.0:
                 posVals = newDist.index[newDist > 0.4].to_numpy()
 
-                print(col1, "=", i1, "=>", col2, "=", posVals, ":", ent)
+                print(f"if {col1}={i1}, then the player has {col2}={posVals}. Conf: {ent:2.0%}")
 
     # # Use information_gain
     if filterMode == "IG":
@@ -91,12 +93,32 @@ def get_tables(col1, col2, filterMode="IG"):
                 newDist /= baseDist
                 posVals = newDist.index[newDist > 1.1].to_numpy()
                 negVals = newDist.index[newDist < 0.9].to_numpy()
-                print(col1, "=", i1, "=>", col2 + ":", "+" + str(posVals), "-" + str(negVals), IG)
+                print(f"if {col1}={i1}, then the probability of {col2} = {str(posVals)} increases, and {col2} = {str(negVals)} decreases. Conf: {IG:2.0%}")
 
     return (pivtab, dvals, tvals)
 
 (pivtab, dvals, tvals) = get_tables("WEIGHT", "HEIGHT")
 pivtab
+
+# %% Export the stuff
+def export_table(pivtab, dvals, tvals, first_column, second_column):
+    second_level_keys = ['c', 't', 'd']
+    crosstab = pd.concat(
+        [pivtab, tvals, dvals],
+        axis=1,
+        keys=second_level_keys
+    ).swaplevel(axis=1).reindex(
+        product(colnames[second_column], second_level_keys),
+        axis=1
+    )
+    Path("../reports/3and4/tables").mkdir(parents=True, exist_ok=True)
+    crosstab.to_latex(
+        f"../reports/3and4/tables/{first_column}-{second_column}.tex",
+        float_format=lambda x: f"{x:2.0%}"
+    )
+    return crosstab
+
+export_table(pivtab, dvals, tvals, "WEIGHT", "HEIGHT")
 # %%
 print("DValues:")
 dvals
@@ -110,7 +132,28 @@ interestingColumns = ["HEIGHT", "WEIGHT", "PTS", "ACTIVE_YEARS"]
 for c1 in interestingColumns:
     for c2 in interestingColumns:
         if c1 != c2:
-            get_tables(c1, c2, "Ent")
+            (pivtab, dvals, tvals) = get_tables(c1, c2, "Ent")
+            export_table(pivtab, dvals, tvals, c1, c2)
+
+#%% Generate table tex file
+def escape(c):
+    return c.replace("_", "\\_")
+
+def tex_table(c1, c2):
+    return f'''
+\\begin{{table}}[h]
+    \\centering
+    \\input{{"tables/{c1}-{c2}.tex"}}
+    \\caption{{t- and d-weights for \\texttt{{{escape(c1)}}} and \\texttt{{{escape(c2)}}}}}
+\\end{{table}}
+    '''
+
+with open("../reports/3and4/tablelist.tex", "w") as f:
+    for c1 in interestingColumns:
+        for c2 in interestingColumns:
+            if c1 != c2:
+                f.write(tex_table(c1, c2))
+
 # %% Mine Dataset
 interestingColumns = ["HEIGHT", "WEIGHT", "PTS", "ACTIVE_YEARS"]
 
@@ -120,17 +163,5 @@ for c1 in interestingColumns:
             get_tables(c1, c2, "IG")
 
 # %%
-get_tables("PTS", "ACTIVE_YEARS")[0]
-# %%
-(pivtab, dvals, tvals) = get_tables("WEIGHT", "ACTIVE_YEARS")
-
-# %%
-a = pivtab.sum(0) / pivtab.to_numpy().sum()
-
-# %%
-pivtab.sum(1) / pivtab.to_numpy().sum()
-
-# %%
-
 
 # %%
