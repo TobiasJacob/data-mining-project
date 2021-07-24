@@ -41,4 +41,9 @@ reduceData("Team_Attributes", columnsToKeep)
 columnsToKeep = "namePlayer, value, slugSeason"
 reduceData("Player_Salary", columnsToKeep)
 
+# %% convert Draft
+columnsToKeep = "yearDraft, numberPickOverall, numberRound, numberRoundPick, namePlayer, slugTeam, idTeam, nameOrganizationFrom"
+reduceData("Draft", columnsToKeep)
+
+
 # %%

@@ -15,6 +15,7 @@ cubePlayers = pd.read_csv("cubePlayers.csv")
 biometricCube = pd.read_csv("biometricCube.csv")
 cubeGames["GAME_DATE"] = pd.to_datetime(cubeGames["GAME_DATE"])
 cubePlayers["BIRTHDATE"] = pd.to_datetime(cubePlayers["BIRTHDATE"])
+cubeDraft = pd.read_csv("cubeDraft.csv")
 
 # %%
 sns.lmplot('ACTIVE_YEARS', 'PTS', data=cubePlayers, hue='POSITION', fit_reg=False)
@@ -33,6 +34,11 @@ plt.savefig(f"../reports/2/figures/ACTIVE_YEARS_over_PTS2.eps")
 sns.lmplot('HEIGHT', 'PTS', data=cubePlayers, fit_reg=False)
 # plt.title("Player height and points")
 plt.savefig(f"../reports/2/figures/HEIGHT_over_PTS2.eps")
+
+# %%
+sns.lmplot('numberRound', 'PTS', data=cubeDraft, fit_reg=True)
+# plt.title("Draft  Round and Player Points")
+plt.savefig(f"../reports/2/figures/DraftRound_over_PTS2.eps")
 
 # %%
 sns.distplot(cubePlayers[["FROM_YEAR_AGE"]], hist=False, rug=True)

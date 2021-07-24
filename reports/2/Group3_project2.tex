@@ -107,6 +107,38 @@ Values
 \texttt{value} is the value of the player.
 \texttt{ACTIVE\_YEARS} is the time the player spend at the NBA.
 
+
+\subsection{Cube of Draft}
+This is the construction of \texttt{cubeDraft}.
+\begin{lstlisting}
+Dimensions
+- FULL_NAME < TEAM_NAME
+- POSITION
+- AGE
+- FROM_YEAR_AGE
+- TO_YEAR_AGE
+
+Values
+- FIRST_NAME
+- LAST_NAME
+- HEIGHT
+- WEIGHT
+- PTS
+- FROM_YEAR
+- TO_YEAR
+- value
+- YEARFOUNDED
+- CITY
+- NICKNAME
+- BIRTHDATE
+- ACTIVE_YEARS
+\end{lstlisting}
+\texttt{FULL\_NAME} and \texttt{TEAM\_NAME} form a concept hierarchy.
+\texttt{FROM\_YEAR} is when the player started playing in the NBA with the age \texttt{FROM\_YEAR\_AGE}.
+\texttt{TO\_YEAR} specifies when the player left the NBA.
+\texttt{value} is the value of the player.
+\texttt{ACTIVE\_YEARS} is the time the player spend at the NBA.
+
 \subsection{Biometrics cube}
 For later project submissions, categorial data attributes are needed.
 We construct a cube with biometric data of the players.
@@ -155,6 +187,12 @@ We added some interesting figures
     \centering
     \includegraphics[width=8cm]{figures/START_VS_END_AGE.eps}
     \caption{At which age players join and leave the NBA.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{figures/DraftRound_over_PTS2.eps}
+    \caption{How does draft round affect points scored.}
 \end{figure}
 
 \clearpage

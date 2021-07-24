@@ -35,13 +35,23 @@ dfPlayers["FROM_YEAR"] = pd.to_numeric(dfPlayers["FROM_YEAR"])
 dfPlayers["TO_YEAR"] = pd.to_numeric(dfPlayers["TO_YEAR"])
 dfPlayers.dtypes
 
-#%% Fix dtypes dfPlayerSalary
+#%% Fix dtypes dfTeams
 dfTeams = pd.read_sql("SELECT * FROM Team_Attributes", con, index_col="ID").drop("index", axis=1)
 dfTeams.dtypes
 
 #%% Fix dtypes dfPlayerSalary
 dfPlayerSalary = pd.read_sql("SELECT * FROM Player_Salary", con, index_col="namePlayer").drop("index", axis=1)
 dfPlayerSalary.dtypes
+
+#%% Fix dtypes dfDraft
+dfDraft = pd.read_sql("SELECT * FROM Draft", con)#.drop("index", axis=1)
+dfDraft["yearDraft"] = pd.to_numeric(dfDraft["yearDraft"])
+dfDraft["numberPickOverall"] = pd.to_numeric(dfDraft["numberPickOverall"])
+dfDraft["numberRound"] = pd.to_numeric(dfDraft["numberRound"])
+dfDraft["numberRoundPick"] = pd.to_numeric(dfDraft["numberRoundPick"])
+dfDraft["idTeam"] = pd.to_numeric(dfDraft["idTeam"])
+dfDraft.dtypes
+
 
 # %% Outlier fixing
 # Fix active years for 
@@ -75,8 +85,19 @@ cubePlayers["ACTIVE_YEARS"] = dfPlayers["TO_YEAR"] - dfPlayers["FROM_YEAR"]
 cubePlayers.loc[cubePlayers["POSITION"] == "Center-Forward", "POSITION"] = "Forward-Center"
 cubePlayers.loc[cubePlayers["POSITION"] == "Guard-Forward", "POSITION"] = "Forward-Guard"
 cubePlayers.tail()
-
 cubePlayers.to_csv("cubePlayers.csv")
+
+
+# %%
+cubeDraft = dfDraft.join(
+    dfPlayers, on="namePlayer", how="left", rsuffix="namePlayer"
+).drop(["FULL_NAME"], axis=1)
+cubeDraft.to_csv("cubeDraft.csv")
+cubeDraft.tail()
+
+
+
+
 #%%
 def discretize(cube, key: str, labels: List[str]):
     labels = np.array(labels)
