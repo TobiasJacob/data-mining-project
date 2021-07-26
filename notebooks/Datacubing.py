@@ -9,6 +9,9 @@ import seaborn as sns
 from sklearn.cluster import KMeans
 from pathlib import Path
 
+from pathlib import Path
+Path("../reports/2/tables").mkdir(parents=True, exist_ok=True)
+
 sns.set_style("whitegrid")
 
 
@@ -58,6 +61,7 @@ cubeGames = dfGames.join(
     dfTeams, on="TEAM_ID_AWAY", how="left", rsuffix="AWAY_TEAM"
 ).drop(["TEAM_ID_HOME", "TEAM_ID_AWAY"], axis=1)
 cubeGames.to_csv("cubeGames.csv")
+cubeGames.head(10).to_latex("../reports/2/tables/cubeGames.tex")
 cubeGames.tail()
 
 # %%
@@ -76,9 +80,18 @@ cubePlayers.loc[cubePlayers["POSITION"] == "Center-Forward", "POSITION"] = "Forw
 cubePlayers.loc[cubePlayers["POSITION"] == "Guard-Forward", "POSITION"] = "Forward-Guard"
 cubePlayers.tail()
 
+cubeGames.head(10).to_latex("../reports/2/tables/cubePlayers.tex")
 cubePlayers.to_csv("cubePlayers.csv")
+# %%
+biometricCube = cubePlayers[["FULL_NAME", "TEAM_NAME", "HEIGHT", "WEIGHT", "PTS", "POSITION", "ACTIVE_YEARS"]].copy()
+biometricCube.to_csv("biometricCubeRaw.csv")
+biometricCube
 #%%
 def discretize(cube, key: str, labels: List[str]):
+    # pass # Debugging
+    # cube=biometricCube
+    # key="HEIGHT"
+    # labels=["Short", "Middle", "Tall"]
     labels = np.array(labels)
     col = cube[[key]]
     ind = ~col[key].isna()
@@ -86,18 +99,17 @@ def discretize(cube, key: str, labels: List[str]):
     clusterOrder = np.argsort(np.argsort(kmeans.cluster_centers_[:, 0]))
     cube[key] = "N/A"
     cube[key][ind] = labels[clusterOrder[kmeans.labels_]]
-    for lab in labels:
-        print(lab + ":", (cube[key] == lab).sum())
+    clusterBorders = np.sort(kmeans.cluster_centers_[:, 0])
+    clusterBorders = (clusterBorders[:-1] + clusterBorders[1:]) / 2
+    clusterBorders = np.stack((col.min()[0], *clusterBorders, col.max()[0]))
+    for (lab, lowVal, highVal) in zip(labels, clusterBorders[:-1], clusterBorders[1:]):
+        print(f"{lab}: {(cube[key] == lab).sum()} values, [{lowVal:2.2f}, {highVal:2.2f}]")
 
     sns.displot(col, kind="kde")
     plt.plot(kmeans.cluster_centers_, np.zeros_like(kmeans.cluster_centers_), "o")
     Path("../reports/2/figures/disc").mkdir(parents=True, exist_ok=True)
     plt.savefig(f"../reports/2/figures/disc/{key}.eps")
 
-# %%
-biometricCube = cubePlayers[["FULL_NAME", "TEAM_NAME", "HEIGHT", "WEIGHT", "PTS", "POSITION", "ACTIVE_YEARS"]].copy()
-biometricCube.to_csv("biometricCubeRaw.csv")
-biometricCube
 # %%
 discretize(biometricCube, "HEIGHT", ["Short", "Middle", "Tall"])
 biometricCube
@@ -116,5 +128,8 @@ biometricCube
 
 #%%
 biometricCube.to_csv("biometricCube.csv")
+biometricCube.tail(20).to_latex("../reports/2/tables/biometricCubeTable.tex")
+
+# %%
 
 # %%

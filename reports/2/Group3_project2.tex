@@ -5,7 +5,9 @@
 \usepackage{graphicx}
 \usepackage{listings} % linebreaks in lstlisting
 \usepackage{minted} % python code
-
+\usepackage{booktabs} % tables
+\usepackage{adjustbox} % tables
+\usepackage{rotating}
 
 \lstset{
 basicstyle=\small\ttfamily,
@@ -76,6 +78,14 @@ Values:
 \texttt{FTM} is the number free throws made. Free throws are worth one point.
 The other columns are self-explainatory.
 
+\begin{table}[h]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \input{tables/cubeGames.tex}
+    \end{adjustbox}
+    \caption{Example values for the games cube}
+\end{table}
+
 \subsection{Cube of players}
 This is the construction of \texttt{cubePlayers}.
 \begin{lstlisting}
@@ -107,10 +117,19 @@ Values
 \texttt{value} is the value of the player.
 \texttt{ACTIVE\_YEARS} is the time the player spend at the NBA.
 
+\begin{table}[h]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \input{tables/cubePlayers.tex}
+    \end{adjustbox}
+    \caption{Example values for the player cube}
+\end{table}
+
 \subsection{Biometrics cube}
 For later project submissions, categorial data attributes are needed.
 We construct a cube with biometric data of the players.
 To discretize scalar values like \texttt{HEIGHT} or \texttt{WEIGHT}, we utilize 1 dimensional k-Means clustering, which is already implemented.
+The emerging intervals are shown in the following output log.
 \begin{lstlisting}
 Dimensions:
 - FULL_NAME < TEAM_NAME
@@ -119,9 +138,34 @@ Dimensions:
 
 Values:
 - HEIGHT: [Short, Middle, Tall]
+    Short: 1177 values, [65.00, 75.53]
+    Middle: 1592 values, [75.53, 79.72]
+    Tall: 1634 values, [79.72, 91.00]
 - WEIGHT: [Light, Middle, Heavy]
+    Light: 1804 values, [133.00, 202.02]
+    Middle: 1827 values, [202.02, 236.15]
+    Heavy: 768 values, [236.15, 360.00]
 - PTS: [LessScores, MiddleScores, MoreScores, ManyScores]
+    LessScores: 1925 values, [0.00, 4.37]
+    MiddleScores: 1496 values, [4.37, 8.86]
+    MoreScores: 779 values, [8.86, 15.38]
+    ManyScores: 285 values, [15.38, 31.80]
+- ActiveYears: [Short, Middle, Long]
+    Short: 2484 values, [0.00, 3.42]
+    Middle: 1048 values, [3.42, 8.78]
+    Long: 968 values, [8.78, 24.00]
 \end{lstlisting}
+
+Example values
+
+\begin{table}[h]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \input{tables/biometricCubeTable.tex}
+    \end{adjustbox}
+    \caption{Example values for the biometric cube}
+\end{table}
+
 This cube allows us to calculate t- and d-weights.
 
 \section{Figures}
