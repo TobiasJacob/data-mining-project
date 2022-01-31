@@ -1,6 +1,6 @@
 # Data mining project
 
-Please keep the Git history clean. Do not submit binary files, large files, build outputs or something comparable.
+This project is for a data mining class and analyzes the NBA dataset.
 
 ## The order in which to run the scripts
 
